@@ -7,6 +7,7 @@ let timeLeft = 30;
 
 const WIN_TARGET = 20;
 const GAME_LENGTH_SECONDS = 30;
+const BAD_DROP_CHANCE = 0.25;
 
 const winningMessages = [
   "Amazing work! Every drop counts.",
@@ -23,11 +24,13 @@ const losingMessages = [
 const scoreEl = document.getElementById("score");
 const timeEl = document.getElementById("time");
 const startBtn = document.getElementById("start-btn");
+const resetBtn = document.getElementById("reset-btn");
 const gameContainer = document.getElementById("game-container");
 const gameMessageEl = document.getElementById("game-message");
 
 // Wait for button click to start the game
 startBtn.addEventListener("click", startGame);
+resetBtn.addEventListener("click", resetGame);
 
 function startGame() {
   // Prevent multiple games from running at once
@@ -42,6 +45,7 @@ function startGame() {
   gameMessageEl.className = "game-message";
   startBtn.disabled = true;
   gameContainer.innerHTML = "";
+  startBtn.textContent = "Playing...";
 
   // Create new drops every second (1000 milliseconds)
   dropMaker = setInterval(createDrop, 550);
@@ -62,6 +66,11 @@ function createDrop() {
   // Create a new div element that will be our water drop
   const drop = document.createElement("div");
   drop.className = "water-drop";
+  const isBadDrop = Math.random() < BAD_DROP_CHANCE;
+
+  if (isBadDrop) {
+    drop.classList.add("bad-drop");
+  }
 
   // Make drops different sizes for visual variety
   const initialSize = 60;
@@ -81,7 +90,12 @@ function createDrop() {
   drop.addEventListener("click", () => {
     if (!gameRunning) return;
 
-    score += 1;
+    if (isBadDrop) {
+      score = Math.max(0, score - 1);
+    } else {
+      score += 1;
+    }
+
     scoreEl.textContent = score;
     drop.remove();
   });
@@ -110,5 +124,42 @@ function endGame() {
 
   gameMessageEl.textContent = messagePool[randomIndex];
   gameMessageEl.className = `game-message ${didWin ? "win" : "lose"}`;
+
+  if (didWin) {
+    launchConfetti();
+  }
+}
+
+function resetGame() {
+  gameRunning = false;
+  clearInterval(dropMaker);
+  clearInterval(gameTimer);
+
+  score = 0;
+  timeLeft = GAME_LENGTH_SECONDS;
+  scoreEl.textContent = score;
+  timeEl.textContent = timeLeft;
+  gameMessageEl.textContent = "";
+  gameMessageEl.className = "game-message";
+
+  startBtn.disabled = false;
+  startBtn.textContent = "Start Game";
+  gameContainer.innerHTML = "";
+}
+
+function launchConfetti() {
+  const confettiColors = ["#FFC907", "#2E9DF7", "#F5402C", "#4FCB53", "#FF902A"];
+
+  for (let i = 0; i < 120; i += 1) {
+    const piece = document.createElement("div");
+    piece.className = "confetti";
+    piece.style.left = `${Math.random() * 100}vw`;
+    piece.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    piece.style.animationDelay = `${Math.random() * 0.35}s`;
+    piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 2600);
+  }
 }
 
