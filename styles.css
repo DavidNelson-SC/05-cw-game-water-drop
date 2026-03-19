@@ -88,10 +88,9 @@ body {
 }
 
 
-#start-btn {
+#start-btn,
+#reset-btn {
     padding: 8px 14px;
-    background-color: var(--cw-yellow);
-    color: var(--cw-dark);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -99,8 +98,23 @@ body {
     font-weight: 700;
 }
 
+#start-btn {
+    background-color: var(--cw-yellow);
+    color: var(--cw-dark);
+}
+
+#reset-btn {
+    background-color: #ffffff;
+    color: var(--cw-blue);
+    border: 2px solid var(--cw-blue);
+}
+
 #start-btn:hover {
     background-color: #ffd63f;
+}
+
+#reset-btn:hover {
+    background-color: #eaf6ff;
 }
 
 #start-btn:disabled {
@@ -140,7 +154,9 @@ body {
 }
 
 .bad-drop {
-    background-color: #ff4444;
+    background-color: var(--cw-red);
+    border-color: #ffe7e3;
+    box-shadow: 0 5px 12px rgba(245, 64, 44, 0.32);
 }
 
 .game-title {
@@ -174,12 +190,33 @@ body {
     color: var(--cw-red);
 }
 
+.confetti {
+    position: fixed;
+    top: -16px;
+    width: 10px;
+    height: 18px;
+    pointer-events: none;
+    opacity: 0.9;
+    animation: confettiFall 2.4s linear forwards;
+    z-index: 999;
+}
+
 @keyframes dropFall {
     from {
         transform: translateY(-20px);
     }
     to {
         transform: translateY(600px);
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
     }
 }
 
@@ -216,7 +253,8 @@ body {
         font-size: 16px;
     }
 
-    #start-btn {
+    #start-btn,
+    #reset-btn {
         width: 100%;
     }
 
