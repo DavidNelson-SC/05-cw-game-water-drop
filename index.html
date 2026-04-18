@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Water Drop Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,6 +17,15 @@
         <div class="score-panel">
             <div class="score">Score: <span id="score">0</span></div>
             <div class="timer">Time: <span id="time">30</span>s</div>
+            <div class="goal">Goal: <span id="goal">20</span></div>
+            <div class="mode-control">
+                <label for="difficulty">Mode</label>
+                <select id="difficulty" aria-label="Select difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
             <button id="start-btn">Start Game</button>
             <button id="reset-btn" type="button">Reset</button>
         </div>
@@ -21,6 +33,14 @@
         
         <div id="game-container">
         </div>
+
+        <footer class="cw-footer">
+            <p>Every drop matters. Learn how clean water changes everything.</p>
+            <div class="cw-links">
+                <a href="https://www.charitywater.org/" target="_blank" rel="noopener noreferrer">Visit charity: water</a>
+                <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate now</a>
+            </div>
+        </footer>
     </div>
     
     <script src="script.js"></script>
